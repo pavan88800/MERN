@@ -17,7 +17,7 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  BoD: {
+  DoB: {
     type: String,
     required: true
   },
