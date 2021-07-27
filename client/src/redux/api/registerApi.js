@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { fetchDataFailure } from '../actions/authaction'
 
 export const RegisterAPI = data => {
   return axios('http://localhost:5000/api/users', {
@@ -10,8 +11,7 @@ export const RegisterAPI = data => {
     }
   })
     .then(res => res.data)
-
-    .catch(err => console.error(err.response.errors))
+    .catch(error => error.response.data)
 }
 
 // export const RegisterAPI = request => {

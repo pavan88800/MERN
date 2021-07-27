@@ -5,10 +5,3 @@ export function postData (data) {
     payload: data
   }
 }
-
-export const fetchDataFailure = error => {
-  return {
-    type: REGISTER_FAIL,
-    payload: error
-  }
-}

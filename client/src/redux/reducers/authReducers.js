@@ -19,6 +19,7 @@ export function authUser (state = initialState, action) {
       }
 
     case REGISTER_FAIL:
+      console.log(payload.errors)
       return {
         ...state,
         token: null,

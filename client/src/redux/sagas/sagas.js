@@ -1,22 +1,22 @@
 import { put, call, takeLatest, takeLeading } from 'redux-saga/effects'
 import { fetchDataFailure } from '../actions/authaction'
 import { RegisterAPI } from '../api/registerApi'
-import { REGISTER_SUCCESS } from '../types'
+import { REGISTER_FAIL, REGISTER_SUCCESS } from '../types'
 
 export function * register (action) {
   try {
-    let data = yield call(RegisterAPI, action.payload)
-
-    yield put({
-      type: REGISTER_SUCCESS,
-      payload: data
-    })
-  } catch (err) {
-    const errors = err.response.errors.data.errors.errors
-    if (errors) {
-      console.log(errors)
-      errors.forEach(error => fetchDataFailure(error.msg))
+    let { data, errors } = yield call(RegisterAPI, action.payload)
+    console.log(errors)
+    if (data) {
+      yield put({
+        type: REGISTER_SUCCESS,
+        payload: data
+      })
+    } else {
+      yield put({ type: REGISTER_FAIL, payload: errors })
     }
+  } catch (errors) {
+    yield put({ type: REGISTER_FAIL, payload: errors })
   }
 }
 
@@ -31,5 +31,5 @@ export function * register (action) {
 // }
 
 export function * watchAgeUp () {
-  yield takeLeading('REGISTER_SUCCESS', register)
+  yield takeLeading(REGISTER_SUCCESS, register)
 }
