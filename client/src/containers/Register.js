@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
 import { Form, Button, Row, Col, Container } from 'react-bootstrap'
-const Register = () => {
+import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { postData } from '../redux/actions/authaction'
+import { register } from '../redux/sagas/sagas'
+
+const Register = ({ history }) => {
+  const dispatch = useDispatch()
+  const [errors, setErrors] = useState()
   const [input, setInput] = useState({
     name: '',
     username: '',
@@ -14,19 +21,12 @@ const Register = () => {
     e.preventDefault()
     setInput({ ...input, [e.target.name]: e.target.value })
   }
-  const getData = e => {
+  const getData = async e => {
     e.preventDefault()
-    if (
-      name === '' ||
-      email === '' ||
-      password === '' ||
-      dateofbirth === '' ||
-      username === '' ||
-      dateofbirth === ''
-    ) {
-      alert('Enter the All fildes')
+    if (name === '' || email === '' || password === '' || username === '') {
+      alert('Please enter all flides')
     } else {
-      console.log(input)
+      dispatch(postData({ username, name, email, password, dateofbirth }))
     }
   }
   return (
@@ -94,7 +94,7 @@ const Register = () => {
 
               <Row className='py-3'>
                 <Col>
-                  Have an Account? <a href='/login'>Login</a>
+                  Have an Account? <Link to='/login'>Login</Link>
                 </Col>
               </Row>
             </Form>
@@ -104,5 +104,4 @@ const Register = () => {
     </div>
   )
 }
-
 export default Register

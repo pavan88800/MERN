@@ -1,14 +1,19 @@
 const express = require('express')
 const app = express()
 const ConnectDb = require('./DB/DataBase')
+var cors = require('cors')
+app.use(cors())
 const Port = process.env.PORT || 5000
 const dotenv = require('dotenv')
+const bodyParser = require('body-parser')
 dotenv.config()
 // DataBase Connection
 
 // bodyPraser
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 ConnectDb()
 app.get('/', (req, res) => {

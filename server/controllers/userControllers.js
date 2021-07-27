@@ -1,20 +1,28 @@
 const User = require('../models/User.js')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const { check, validationResult } = require('express-validator')
 
 // @route    POST api/users
 // @desc     Register user
 // @access   Public
 const userRegister = async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+
   const { username, name, email, password, DoB, gender } = req.body
   try {
     //   check if user Exisits or not
-    console.log(User)
+
     let user = await User.findOne({ email: email })
 
     if (user) {
-      return res.status(400).json({ error: 'User Already Registered  ' })
+      return res.status(404).json({ errors: [{ msg: 'User already exists' }] })
     }
+
+    console.log(user)
     user = new User({
       username,
       email,
@@ -23,10 +31,16 @@ const userRegister = async (req, res) => {
       DoB,
       gender
     })
-    let salt = await bcrypt.genSalt(10)
+    console.log(user)
+    // let salt = await bcrypt.genSalt(10)
+    // user.password = await bcrypt.hash(password, salt)
+    const salt = await bcrypt.genSalt(10)
+    console.log(salt)
     user.password = await bcrypt.hash(password, salt)
+
     await user.save()
 
+    console.log(user)
     // Create JOSN web Token Here
 
     let payload = {
@@ -44,6 +58,8 @@ const userRegister = async (req, res) => {
 
     // return res.status(200).json({ message: 'User Saved to DataBase' })
   } catch (error) {
+    console.error(error)
+    console.log(error)
     return res.status(500).json({ error: error.message })
   }
 }
@@ -53,6 +69,10 @@ const userRegister = async (req, res) => {
 // @access   Public
 
 const getAlluser = async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
   try {
     //   get All Users
     let user = await User.find({})
@@ -122,8 +142,7 @@ const getUserbyId = async (req, res) => {
 // @access   Public
 const updateUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
-    console.log(req.user.id)
+    const user = await User.findByIdAndUpdate(req.user.id)
     console.log(user)
     if (user) {
       user.username = req.body.username || user.username
@@ -175,7 +194,7 @@ const updateUser = async (req, res) => {
 // @access   Public
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id)
+    const user = await User.findByIdAndRemove(req.params.id)
     console.log(req.user.id)
     if (user) {
       await user.remove()
