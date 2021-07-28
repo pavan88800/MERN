@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 // routers
 app.use('/api/users', require('./routes/userRoutes'))
-
+app.use('/api/posts', require('./routes/postRoute'))
 app.listen(Port, () => {
   console.log(`Serevr is Runing on ${Port}`)
 })
