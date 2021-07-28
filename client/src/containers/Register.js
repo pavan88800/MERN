@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Button, Row, Col, Container } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { postData } from '../redux/actions/authaction'
-import { register } from '../redux/sagas/sagas'
+import { Link, Redirect } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { RegisterSuccess } from '../redux/actions/authaction'
 
 const Register = ({ history }) => {
   const dispatch = useDispatch()
+
+  const user = useSelector(state => state.authOne)
+  const { isAuthenticated, error } = user
+
   const [errors, setErrors] = useState()
   const [input, setInput] = useState({
     name: '',
@@ -26,9 +29,14 @@ const Register = ({ history }) => {
     if (name === '' || email === '' || password === '' || username === '') {
       alert('Please enter all flides')
     } else {
-      dispatch(postData({ username, name, email, password, dateofbirth }))
+      dispatch(
+        RegisterSuccess({ username, name, email, password, dateofbirth })
+      )
     }
   }
+  // if (isAuthenticated === true) {
+  //   return <Redirect to='/login' />
+  // }
   return (
     <div className='center-width'>
       <Container>

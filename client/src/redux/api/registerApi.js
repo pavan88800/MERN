@@ -1,6 +1,29 @@
 import axios from 'axios'
 import { fetchDataFailure } from '../actions/authaction'
+// fetchUser(action) {
+//   const { username, password } = action.user;
+//   const body = { username, password };
 
+//   return fetch(LOGIN_URL, {
+//     method,
+//     headers: {
+//       'Accept': 'application/json',
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(body)
+//   })
+// }
+
+// export const RegisterAPI = data => {
+//   return fetch('http://localhost:5000/api/users', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Accept: 'application/json'
+//     },
+//     body: JSON.stringify(data)
+//   })
+// }
 export const RegisterAPI = data => {
   return axios('http://localhost:5000/api/users', {
     method: 'POST',
@@ -10,8 +33,8 @@ export const RegisterAPI = data => {
       Accept: 'application/json'
     }
   })
-    .then(res => res.data)
-    .catch(error => error.response.data)
+    .then(res => res)
+    .catch(error => error.response.error)
 }
 
 // export const RegisterAPI = request => {

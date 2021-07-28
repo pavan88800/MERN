@@ -7,12 +7,12 @@ const sagaMiddleware = createSagaMiddleware()
 
 const initialState = {}
 
-const reuder = combineReducers({
-  auth: authUser
+const reducer = combineReducers({
+  authOne: authUser
 })
 
 const store = createStore(
-  reuder,
+  reducer,
   initialState,
   composeWithDevTools(applyMiddleware(sagaMiddleware))
 )
