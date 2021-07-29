@@ -90,13 +90,13 @@ const loginUser = async (req, res) => {
   try {
     let user = await User.findOne({ email: email })
     if (!user) {
-      return res.status(404).json({ error: 'User Not Found' })
+      return res.status(404).json({ errors: [{ msg: 'User Not Found' }] })
     }
 
     let isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
-      res.status(400).json({ errors: 'Invalid Credentials' })
+      return res.status(404).json({ errors: [{ msg: 'Invalid Credentials' }] })
     }
 
     let payload = {

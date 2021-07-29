@@ -5,7 +5,6 @@ import { authUser } from '../redux/reducers/authReducers'
 import { LoginUser } from '../redux/reducers/loginReducer'
 import { watchAgeUp } from '../redux/sagas/sagas'
 const sagaMiddleware = createSagaMiddleware()
-
 const initialState = {}
 
 const reducer = combineReducers({

@@ -7,7 +7,7 @@ import { userLogin } from '../redux/actions/authaction'
 const Login = ({ history }) => {
   const dispatch = useDispatch()
   let user = useSelector(state => state.loginUser)
-  let { isAuthenticated, error } = user
+  let { isAuthenticated, error, loading } = user
   console.log(user)
   const [input, setInput] = useState({
     email: '',
@@ -67,10 +67,24 @@ const Login = ({ history }) => {
                 ></Form.Control>
               </Form.Group>
 
-              <Button type='submit' onClick={handleSubmit} variant='primary'>
+              {/* <Button type='submit' onClick={handleSubmit} variant='primary'>
+                Login
+              </Button> */}
+
+              <Button
+                onClick={handleSubmit}
+                className='btn btn-primary'
+                type='button'
+              >
+                {loading && (
+                  <span
+                    className='spinner-border spinner-border-sm'
+                    role='status'
+                    aria-hidden='true'
+                  ></span>
+                )}{' '}
                 Login
               </Button>
-
               <Row className='py-3'>
                 <Col>
                   Have an Account? <Link to='/register'>Register</Link>
