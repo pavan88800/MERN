@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
 import { Form, Button, Row, Col, Container } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Redirect } from 'react-router-dom'
+import { userLogin } from '../redux/actions/authaction'
+
 const Login = ({ history }) => {
+  const dispatch = useDispatch()
+  let user = useSelector(state => state.loginUser)
+  let { isAuthenticated, error } = user
+  console.log(user)
   const [input, setInput] = useState({
     email: '',
     password: ''
@@ -13,40 +19,30 @@ const Login = ({ history }) => {
     e.preventDefault()
     setInput({ ...input, [e.target.name]: e.target.value })
   }
-  const getData = async e => {
-    try {
-      e.preventDefault()
-      if (email === '' || password === '') {
-        alert('Enter the All fildes')
-      } else {
-        const config = {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-
-        // sned Data Here
-        let { data } = await axios.post(
-          'http://localhost:5000/api/users/login',
-          {
-            email,
-            password
-          },
-          config
-        )
-        console.log(data)
-        localStorage.setItem('userInfo', JSON.stringify(data))
-        history.push('/home')
-      }
-    } catch (error) {
-      console.error(error.message)
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (email === '' || password === '') {
+      alert('Please enter all values')
+    } else {
+      dispatch(userLogin({ email, password }))
     }
   }
+
+  if (isAuthenticated) {
+    return <Redirect to='/home' />
+  }
+
   return (
     <div className='center-width'>
       <Container>
         <Row className='justify-content-md-center'>
           <Col xs={12} md={6}>
+            {error &&
+              error?.map((error, i) => (
+                <p className='alert alert-danger text-center' key={i}>
+                  {error.msg}
+                </p>
+              ))}
             <Form>
               <h1>Login </h1>
               <Form.Group>
@@ -71,7 +67,7 @@ const Login = ({ history }) => {
                 ></Form.Control>
               </Form.Group>
 
-              <Button type='submit' onClick={getData} variant='primary'>
+              <Button type='submit' onClick={handleSubmit} variant='primary'>
                 Login
               </Button>
 

@@ -1,7 +1,8 @@
 import {
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  USER_REGISTER_REQUEST
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  USER_LOGOUT,
+  USER_LOGIN_REQUEST
 } from '../types'
 const initialState = {
   token: null,
@@ -10,15 +11,14 @@ const initialState = {
   user: null,
   error: []
 }
-export function authUser (state = initialState, action) {
+export function LoginUser (state = initialState, action) {
   const { type, payload } = action
   switch (type) {
-    case USER_REGISTER_REQUEST:
+    case USER_LOGIN_REQUEST:
       return {
         loading: true
       }
-
-    case REGISTER_SUCCESS:
+    case LOGIN_SUCCESS:
       return {
         ...state,
         ...payload,
@@ -26,7 +26,7 @@ export function authUser (state = initialState, action) {
         loading: false,
         token: payload.token
       }
-    case REGISTER_FAIL:
+    case LOGIN_FAIL:
       return {
         ...state,
         token: null,
@@ -35,6 +35,12 @@ export function authUser (state = initialState, action) {
         error: payload.errors
       }
 
+    case USER_LOGOUT:
+      return {
+        token: null,
+        isAuthenticated: false,
+        loading: false
+      }
     default:
       return state
   }

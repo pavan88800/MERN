@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import { Form, Button, Row, Col, Container } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { userRegister } from '../redux/actions/authaction'
+import { Form, Button, Row, Col, Container, Alert } from 'react-bootstrap'
+import { Link, Redirect } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { alertUser, userRegister } from '../redux/actions/authaction'
 
-const Register = ({ history }) => {
+const Register = () => {
   const dispatch = useDispatch()
-
-  // const user = useSelector(state => state.authOne)
+  const user = useSelector(state => state.authOne)
+  let { isAuthenticated, loading, error } = user
 
   const [input, setInput] = useState({
     name: '',
@@ -30,14 +30,20 @@ const Register = ({ history }) => {
       dispatch(userRegister({ username, name, email, password, dateofbirth }))
     }
   }
-  // if (isAuthenticated === true) {
-  //   return <Redirect to='/login' />
-  // }
+
+  if (isAuthenticated) {
+    return <Redirect to='/login' />
+  }
   return (
     <div className='center-width'>
       <Container>
         <Row className='justify-content-md-center'>
           <Col xs={12} md={6}>
+            {error?.map((error, i) => (
+              <p className='alert alert-danger text-center' key={i}>
+                {error.msg}
+              </p>
+            ))}
             <Form>
               <h1>Sign Up</h1>
               <Form.Group>
@@ -92,10 +98,23 @@ const Register = ({ history }) => {
                 ></Form.Control>
               </Form.Group>
 
-              <Button type='submit' onClick={handleSubmit} variant='primary'>
+              {/* <Button type='submit' variant='primary'>
+                Register
+              </Button> */}
+              <Button
+                onClick={handleSubmit}
+                className='btn btn-primary'
+                type='button'
+              >
+                {loading && (
+                  <span
+                    className='spinner-border spinner-border-sm'
+                    role='status'
+                    aria-hidden='true'
+                  ></span>
+                )}{' '}
                 Register
               </Button>
-
               <Row className='py-3'>
                 <Col>
                   Have an Account? <Link to='/login'>Login</Link>
