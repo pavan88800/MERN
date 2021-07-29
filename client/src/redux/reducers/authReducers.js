@@ -1,25 +1,32 @@
-import { REGISTER_SUCCESS, REGISTER_FAIL } from '../types'
+import {
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  USER_REGISTER_REQUEST
+} from '../types'
 const initialState = {
-  token: localStorage.getItem('token'),
-  isAuthenticated: false,
+  token: null,
+  isAuthenticated: null,
   loading: true,
+  user: null,
   error: []
 }
 export function authUser (state = initialState, action) {
   const { type, payload } = action
-  console.log(payload)
   switch (type) {
+    case USER_REGISTER_REQUEST:
+      return {
+        loading: true
+      }
     case REGISTER_SUCCESS:
-      localStorage.setItem('token', JSON.stringify(payload.token))
       return {
         ...state,
+        ...payload,
         isAuthenticated: true,
         loading: false,
         token: payload.token
       }
-
     case REGISTER_FAIL:
-      localStorage.removeItem('token')
+      console.log(action, 'actio for Error')
       return {
         ...state,
         token: null,

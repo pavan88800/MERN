@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Form, Button, Row, Col, Container } from 'react-bootstrap'
-import { Link, Redirect } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { RegisterSuccess } from '../redux/actions/authaction'
+import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { userRegister } from '../redux/actions/authaction'
 
 const Register = ({ history }) => {
   const dispatch = useDispatch()
 
-  const user = useSelector(state => state.authOne)
-  const { isAuthenticated, error } = user
+  // const user = useSelector(state => state.authOne)
 
-  const [errors, setErrors] = useState()
   const [input, setInput] = useState({
     name: '',
     username: '',
@@ -24,14 +22,12 @@ const Register = ({ history }) => {
     e.preventDefault()
     setInput({ ...input, [e.target.name]: e.target.value })
   }
-  const getData = async e => {
+  const handleSubmit = async e => {
     e.preventDefault()
     if (name === '' || email === '' || password === '' || username === '') {
-      alert('Please enter all flides')
+      alert('Please enter all values')
     } else {
-      dispatch(
-        RegisterSuccess({ username, name, email, password, dateofbirth })
-      )
+      dispatch(userRegister({ username, name, email, password, dateofbirth }))
     }
   }
   // if (isAuthenticated === true) {
@@ -96,7 +92,7 @@ const Register = ({ history }) => {
                 ></Form.Control>
               </Form.Group>
 
-              <Button type='submit' onClick={getData} variant='primary'>
+              <Button type='submit' onClick={handleSubmit} variant='primary'>
                 Register
               </Button>
 

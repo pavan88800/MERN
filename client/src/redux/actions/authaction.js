@@ -1,14 +1,9 @@
-import { REGISTER_FAIL, REGISTER_SUCCESS, USER_REQUEST } from '../types'
+import { USER_REGISTER_REQUEST } from '../types'
 
-export function RegisterSuccess (data) {
+export function userRegister (data) {
+  console.log(data)
   return {
-    type: REGISTER_SUCCESS,
+    type: USER_REGISTER_REQUEST,
     payload: data
-  }
-}
-
-export function authError () {
-  return {
-    type: REGISTER_FAIL
   }
 }
