@@ -4,7 +4,9 @@ import {
   USER_REGISTER_REQUEST
 } from '../types'
 const initialState = {
-  token: null,
+  token: localStorage.getItem('token')
+    ? JSON.parse(localStorage.getItem('token'))
+    : null,
   isAuthenticated: null,
   loading: false,
   user: null,
@@ -15,7 +17,8 @@ export function authUser (state = initialState, action) {
   switch (type) {
     case USER_REGISTER_REQUEST:
       return {
-        loading: true
+        loading: true,
+        user: payload
       }
 
     case REGISTER_SUCCESS:

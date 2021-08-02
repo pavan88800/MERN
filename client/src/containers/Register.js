@@ -98,11 +98,8 @@ const Register = () => {
                 ></Form.Control>
               </Form.Group>
 
-              {/* <Button type='submit' variant='primary'>
-                Register
-              </Button> */}
               <Button
-                onClick={handleSubmit}
+                onClick={e => handleSubmit(e)}
                 className='btn btn-primary'
                 type='button'
               >

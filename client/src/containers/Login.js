@@ -8,7 +8,10 @@ const Login = ({ history }) => {
   const dispatch = useDispatch()
   let user = useSelector(state => state.loginUser)
   let { isAuthenticated, error, loading } = user
-  console.log(user)
+
+  console.log('user Form Login', user)
+
+  console.log(isAuthenticated, 'User is authenticated')
   const [input, setInput] = useState({
     email: '',
     password: ''
@@ -72,7 +75,7 @@ const Login = ({ history }) => {
               </Button> */}
 
               <Button
-                onClick={handleSubmit}
+                onClick={e => handleSubmit(e)}
                 className='btn btn-primary'
                 type='button'
               >
