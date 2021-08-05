@@ -17,7 +17,7 @@ app.use(bodyParser.json())
 
 ConnectDb()
 app.get('/', (req, res) => {
-  res.send('<h1>hello world</h1>')
+  res.send('<h1>hello worlds</h1>')
 })
 
 // routers

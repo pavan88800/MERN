@@ -1,18 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Button, Row, Col, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import { userLogin } from '../redux/actions/authaction'
 import api from '../utlis/axios'
 
-const Login = ({ history }) => {
+const Login = () => {
   const dispatch = useDispatch()
   let user = useSelector(state => state.loginUser)
   let { isAuthenticated, error, loading } = user
 
-  console.log('user Form Login', user)
-
-  console.log(isAuthenticated, 'User is authenticated')
   const [input, setInput] = useState({
     email: '',
     password: ''
@@ -36,11 +33,9 @@ const Login = ({ history }) => {
       dispatch(userLogin({ email, password }))
     }
   }
-
   if (isAuthenticated) {
     return <Redirect to='/home' />
   }
-
   return (
     <div className='center-width'>
       <Container>

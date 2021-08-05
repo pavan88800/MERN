@@ -35,7 +35,7 @@ export function * register (action) {
       type: REGISTER_SUCCESS,
       payload: res.data.token
     })
-    localStorage.setItem('token', JSON.stringify(res.data))
+    // localStorage.setItem('token', JSON.stringify(res.data))
   } catch (err) {
     console.log(err)
     delay(1000)
@@ -55,8 +55,10 @@ export function * login (action) {
       type: LOGIN_SUCCESS,
       payload: res.data
     })
-
     localStorage.setItem('token', JSON.stringify(res.data))
+    // if (res.status === 200) {
+    //   return <Redirect to='/home' />
+    // }
   } catch (err) {
     const errors = err.response.data
     yield put({

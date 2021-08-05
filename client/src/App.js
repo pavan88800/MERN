@@ -14,12 +14,12 @@ function App () {
       <Router>
         <div className='App'>
           <Switch>
-            <PrivateRoute path='/home' component={Home} />
             <Route exact path='/' component={Register} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/createPost' component={CreatePost} />
             <Route exact path='/userprofile' component={UserProfile} />
+            <PrivateRoute exact path='/home' component={Home} />
           </Switch>
         </div>
       </Router>
