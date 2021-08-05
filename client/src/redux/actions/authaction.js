@@ -1,10 +1,12 @@
 import {
   ADD_POST_REQUEST,
+  DELETE_POST_REQUEST,
   GET_POST_REQUEST,
   USER_DETAILS_REQUEST,
   USER_LOGIN_REQUEST,
   USER_LOGOUT_REQUEST,
-  USER_REGISTER_REQUEST
+  USER_REGISTER_REQUEST,
+  USER_UPDATE_REQUEST
 } from '../types'
 
 export function userRegister (data) {
@@ -28,26 +30,38 @@ export function userLogout () {
   }
 }
 
-export function userDetails (token) {
-  console.log(token, 'from token user ')
+export function userDetails () {
   return {
-    type: USER_DETAILS_REQUEST,
-    payload: token
+    type: USER_DETAILS_REQUEST
   }
 }
 
-export function getAllPosts (token) {
+export function getAllPosts () {
   return {
-    type: GET_POST_REQUEST,
-    payload: token
+    type: GET_POST_REQUEST
   }
 }
 
-export function AddPost (token, data) {
+export function AddPost (data) {
   console.log(data, 'from Data')
-  console.log(token, 'from Token')
+
   return {
     type: ADD_POST_REQUEST,
-    payload: { token, data }
+    payload: { data }
+  }
+}
+
+export function PostDelete (id) {
+  console.log(id, 'from Data')
+  return {
+    type: DELETE_POST_REQUEST,
+    payload: id
+  }
+}
+
+export function UpdateUser (data) {
+  return {
+    type: USER_UPDATE_REQUEST,
+    payload: data
   }
 }

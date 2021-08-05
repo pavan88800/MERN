@@ -3,6 +3,7 @@ import { Form, Button, Row, Col, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import { userLogin } from '../redux/actions/authaction'
+import api from '../utlis/axios'
 
 const Login = ({ history }) => {
   const dispatch = useDispatch()
@@ -27,6 +28,11 @@ const Login = ({ history }) => {
     if (email === '' || password === '') {
       alert('Please enter all values')
     } else {
+      if (localStorage.getItem('token')) {
+        const token = JSON.parse(localStorage.getItem('token'))
+        console.log(token.token, 'globally')
+        api.defaults.headers.common['x-auth-token'] = token.token || token
+      }
       dispatch(userLogin({ email, password }))
     }
   }

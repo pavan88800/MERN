@@ -119,7 +119,7 @@ const loginUser = async (req, res) => {
 
 // @route    GET api/users/auth
 // @desc    Login User
-// @access   Public
+// @access   Private
 
 const getUserbyId = async (req, res) => {
   try {
@@ -127,9 +127,9 @@ const getUserbyId = async (req, res) => {
     const user = await User.findById(req.user.id).select('-password')
     console.log(req.user.id)
     if (user) {
-      res.json(user)
+      return res.status(200).json({ user: user })
     } else {
-      res.status(404).json({ error: 'User not found' })
+      return res.status(404).json({ errors: [{ msg: 'User not found' }] })
     }
   } catch (error) {
     console.error(error)
@@ -157,6 +157,7 @@ const updateUser = async (req, res) => {
       }
       let salt = await bcrypt.genSalt(10)
       user.password = await bcrypt.hash(req.body.password, salt)
+
       let updatedUser = await user.save()
       console.log(updatedUser)
 
@@ -167,7 +168,6 @@ const updateUser = async (req, res) => {
       }
 
       let token = jwt.sign(payload, 'sqqqq', { expiresIn: '50 days' })
-
       console.log(token)
       console.log(updatedUser)
 
@@ -185,7 +185,8 @@ const updateUser = async (req, res) => {
       res.status(404).json({ error: 'User not found' })
     }
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
+    console.log(error.message)
     return res.status(500).json({ error: error.message })
   }
 }

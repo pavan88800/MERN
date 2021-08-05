@@ -22,4 +22,5 @@ const store = createStore(
 )
 
 sagaMiddleware.run(watchAgeUp)
+
 export default store

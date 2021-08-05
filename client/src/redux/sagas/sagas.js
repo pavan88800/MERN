@@ -1,8 +1,7 @@
-import { Redirect } from 'react-router-dom'
 import { put, call, takeLatest, delay } from 'redux-saga/effects'
 import { LoginAPI, UserAPI } from '../api/loginApi'
-import { AddPostAPI, GetPostsAPI } from '../api/postApi'
-import { RegisterAPI } from '../api/registerApi'
+import { getPost, addPost, deletePost } from './postsagas'
+import { RegisterAPI, UpdateAPI } from '../api/registerApi'
 
 import {
   LOGIN_FAIL,
@@ -20,14 +19,17 @@ import {
   POSTS_SUCCESS,
   POST_FAIL,
   ADD_POST,
-  ADD_POST_REQUEST
+  ADD_POST_REQUEST,
+  DELETE_POST_REQUEST,
+  USER_UPDATE_REQUEST_SUCCESS,
+  USER_UPDATE_REQUEST
 } from '../types'
 
 // Register
 export function * register (action) {
   try {
     let res = yield call(RegisterAPI, action.payload)
-    // console.log(res)
+    console.log(res)
     delay(200)
     yield put({
       type: REGISTER_SUCCESS,
@@ -38,7 +40,6 @@ export function * register (action) {
     console.log(err)
     delay(1000)
     const errors = err.response.data
-
     yield put({
       type: REGISTER_FAIL,
       payload: errors
@@ -49,7 +50,7 @@ export function * register (action) {
 export function * login (action) {
   try {
     let res = yield call(LoginAPI, action.payload)
-    // console.log(res)
+
     yield put({
       type: LOGIN_SUCCESS,
       payload: res.data
@@ -76,9 +77,6 @@ export function * logout () {
 export function * userDetails (action) {
   try {
     let res = yield call(UserAPI, action.payload)
-    // console.log(res, 'Data successfully called Here....')
-    // console.log(action.payload)
-    // console.log('user successfully fetched data from action')
     yield put({
       type: USER_DETAILS_SUCCESS,
       payload: res.data.user
@@ -92,39 +90,23 @@ export function * userDetails (action) {
   }
 }
 
-export function * getPost (action) {
+export function * updateUser (action) {
   try {
-    let res = yield call(GetPostsAPI, action.payload)
-    // console.log(res, 'get post')
-    // console.log(action.payload)
-    // console.log('user successfully fetched data from action')
+    let res = yield call(UpdateAPI, action.payload)
+    console.log(res, 'from update user')
+    delay(200)
     yield put({
-      type: POSTS_SUCCESS,
-      payload: res.data
+      type: USER_UPDATE_REQUEST_SUCCESS,
+      payload: res.data.token
     })
+    localStorage.setItem('token', JSON.stringify(res.data))
   } catch (err) {
+    console.log(err)
+    delay(1000)
     const errors = err.response.data
     yield put({
-      type: POST_FAIL,
+      type: USER_DETAILS_FAIL,
       payload: errors
-    })
-  }
-}
-
-export function * addPost (action) {
-  console.log(action.payload.token)
-  try {
-    let res = yield call(AddPostAPI, action.payload.token, action.payload)
-    console.log(res.data)
-    console.log('user successfully fetched data from action')
-    yield put({
-      type: ADD_POST,
-      payload: res.data
-    })
-  } catch (err) {
-    yield put({
-      type: POST_FAIL,
-      payload: err
     })
   }
 }
@@ -136,4 +118,6 @@ export function * watchAgeUp () {
   yield takeLatest(USER_DETAILS_REQUEST, userDetails)
   yield takeLatest(GET_POST_REQUEST, getPost)
   yield takeLatest(ADD_POST_REQUEST, addPost)
+  yield takeLatest(DELETE_POST_REQUEST, deletePost)
+  yield takeLatest(USER_UPDATE_REQUEST, updateUser)
 }

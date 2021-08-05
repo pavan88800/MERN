@@ -16,15 +16,17 @@ const initialState = {
   loading: false,
   error: []
 }
-console.log(initialState.token)
+
 export function LoginUser (state = initialState, action) {
   const { type, payload } = action
   console.log(payload)
   switch (type) {
     case USER_LOGIN_REQUEST:
       return {
+        ...state,
         loading: true
       }
+
     case LOGIN_SUCCESS:
       return {
         ...state,
@@ -66,6 +68,7 @@ export function userDetailsReducer (state = { users: {} }, action) {
   switch (type) {
     case USER_DETAILS_REQUEST:
       return {
+        ...state,
         loading: true
       }
     case USER_DETAILS_SUCCESS:

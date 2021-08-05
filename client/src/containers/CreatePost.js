@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { AddPost } from '../redux/actions/authaction'
 import Header from './Header'
 
-const CreatePost = () => {
+const CreatePost = ({ history }) => {
   const dispatch = useDispatch()
-  let user = useSelector(state => state.loginUser)
-  let { token } = user
+
   const [post, setPost] = useState({
     text: ''
   })
@@ -17,9 +16,8 @@ const CreatePost = () => {
     if (text === '') {
       alert('Enter your post ')
     } else {
-      dispatch(AddPost(token, { post }))
-
-      console.log(post)
+      dispatch(AddPost({ post }))
+      history.push('/home')
     }
   }
   return (

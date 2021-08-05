@@ -1,13 +1,12 @@
 import './App.css'
 import Register from './containers/Register'
-import { Provider, useSelector } from 'react-redux'
+import { Provider } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import store from './store/store'
 import Login from './containers/Login'
 import Home from './Componets/Home'
-import PrivateRoute from './utlis/PrivateRoute'
-import Demo from './Componets/Demo'
 import CreatePost from './containers/CreatePost'
+import UserProfile from './containers/UserProfile'
 
 function App () {
   return (
@@ -20,6 +19,7 @@ function App () {
             <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/createPost' component={CreatePost} />
+            <Route exact path='/userprofile' component={UserProfile} />
           </Switch>
         </div>
       </Router>

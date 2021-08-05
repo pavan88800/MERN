@@ -1,30 +1,18 @@
-import axios from 'axios'
+import api from '../../utlis/axios'
 
-export const GetPostsAPI = async token => {
-  console.log('User Token Found Here', token.token)
-  let response = await axios('http://localhost:5000/api/posts/allposts', {
-    headers: {
-      method: 'GET',
-      'x-auth-token': token.token || token,
-      'Content-Type': 'application/json'
-    }
-  })
+export const GetPostsAPI = async () => {
+  let response = await api.get('/api/posts/allposts')
+  console.log(response)
   return response
 }
 
-export const AddPostAPI = async (token, data) => {
-  console.log(data.data, 'from auth')
-  console.log(token, 'from auth token')
-  console.log(JSON.stringify(data.data.post))
-  let datas = data.data.post
-  let response = await axios('http://localhost:5000/api/posts/post', {
-    method: 'POST',
-    data: data.data.post,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'x-auth-token': token.token || token
-    }
-  })
+export const AddPostAPI = async data => {
+  let response = await api.post('/api/posts/post', data.data.post)
+  return response
+}
+
+export const DeletePostAPI = async id => {
+  console.log(id, 'from post ')
+  let response = await api.delete(`/api/posts/${id}`)
   return response
 }

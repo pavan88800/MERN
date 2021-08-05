@@ -3,20 +3,26 @@ import { Navbar, Nav, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { userDetails, userLogout } from '../redux/actions/authaction'
+import api from '../utlis/axios'
 
 const Header = ({ username }) => {
   const dispatch = useDispatch()
+
+  console.log()
   let user = useSelector(state => state.loginUser)
-  let { token, isAuthenticated } = user
+  let { token } = user
 
   console.log('user from Header', token)
   let userInfo = useSelector(state => state.user.users)
 
-  console.log(userInfo?.name)
-
   useEffect(() => {
-    dispatch(userDetails(token))
-  }, [token, dispatch])
+    if (localStorage.getItem('token')) {
+      const token = JSON.parse(localStorage.getItem('token'))
+      console.log(token.token, 'globally')
+      api.defaults.headers.common['x-auth-token'] = token.token || token
+    }
+    dispatch(userDetails())
+  }, [dispatch])
 
   const handleClick = e => {
     e.preventDefault()
@@ -40,9 +46,14 @@ const Header = ({ username }) => {
                     <h6 className='text-white ml-5'>Hi {userInfo?.name} </h6>
                   </Nav.Link>
                 </LinkContainer>
-                <LinkContainer to='createpost'>
+                <LinkContainer to='/createpost'>
                   <Nav.Link>
                     <h6 className='text-white ml-5'>Create Post</h6>
+                  </Nav.Link>
+                </LinkContainer>
+                <LinkContainer to='/userprofile'>
+                  <Nav.Link>
+                    <h6 className='text-white ml-2'>User Profile</h6>
                   </Nav.Link>
                 </LinkContainer>
                 <LinkContainer to='/login' onClick={e => handleClick(e)}>

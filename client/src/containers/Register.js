@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Form, Button, Row, Col, Container, Alert } from 'react-bootstrap'
+import { Form, Button, Row, Col, Container } from 'react-bootstrap'
 import { Link, Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { alertUser, userRegister } from '../redux/actions/authaction'
+import { userRegister } from '../redux/actions/authaction'
 
 const Register = () => {
   const dispatch = useDispatch()

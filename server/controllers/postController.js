@@ -22,17 +22,18 @@ const createPost = async (req, res) => {
       user: req.user.id
     })
     const post = await newPost.save()
-    res.json(post)
+    return res.json(post)
   } catch (err) {
     console.error(err.message)
+    console.log(err)
     res.status(500).send('Server Error')
   }
 }
 
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find().sort({ date: -1 })
-    res.json(posts)
+    const posts = await Post.find().sort({ createdAt: -1 })
+    return res.json(posts)
   } catch (err) {
     console.error(err.message)
     res.status(500).send('Server Error')
