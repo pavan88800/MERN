@@ -7,14 +7,14 @@ import Login from './containers/Login'
 import Home from './Componets/Home'
 import CreatePost from './containers/CreatePost'
 import UserProfile from './containers/UserProfile'
-
+import PrivateRoute from './utlis/PrivateRoute'
 function App () {
   return (
     <Provider store={store}>
       <Router>
         <div className='App'>
           <Switch>
-            <Route path='/home' component={Home} />
+            <PrivateRoute path='/home' component={Home} />
             <Route exact path='/' component={Register} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />
