@@ -8,17 +8,15 @@ import api from '../utlis/axios'
 const Header = ({ username }) => {
   const dispatch = useDispatch()
 
-  console.log()
   let user = useSelector(state => state.loginUser)
   let { token } = user
 
-  console.log('user from Header', token)
   let userInfo = useSelector(state => state.user.users)
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
       const token = JSON.parse(localStorage.getItem('token'))
-      console.log(token.token, 'globally')
+
       api.defaults.headers.common['x-auth-token'] = token.token || token
     }
     dispatch(userDetails())
@@ -27,7 +25,6 @@ const Header = ({ username }) => {
   const handleClick = e => {
     e.preventDefault()
     dispatch(userLogout())
-    console.log('logout request')
   }
 
   return (

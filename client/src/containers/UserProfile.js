@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Alert, Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { AddPost, UpdateUser } from '../redux/actions/authaction'
+import { UpdateUser } from '../redux/actions/authaction'
 import Header from './Header'
 
 const UserProfile = ({ history }) => {
@@ -11,15 +11,13 @@ const UserProfile = ({ history }) => {
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  let userInfo = useSelector(state => state.user.users)
+  const [message, setMessage] = useState('')
+  const [color, setColor] = useState('')
 
-  console.log(userInfo)
+  let userInfo = useSelector(state => state.user.users)
 
   let user = useSelector(state => state.loginUser)
   let { token } = user
-
-  console.log('user ', token.password)
-  let oldpass = token.password
 
   useEffect(() => {
     if (!userInfo) {
@@ -29,24 +27,29 @@ const UserProfile = ({ history }) => {
       setEmail(userInfo.email)
       setUserName(userInfo.username)
     }
-  }, [userInfo])
+  }, [userInfo, history])
 
   const handleSubmit = e => {
     e.preventDefault()
     if (password !== confirmPassword) {
-      alert('Passwords do not match')
+      setMessage('Passwords do not match')
+      setColor('danger')
     } else {
       dispatch(UpdateUser({ name, email, username, password }))
-      alert('User updated successfully')
+      setMessage('User updated successfully')
+      setColor('success')
       setTimeout(() => {
         history.push('/home')
-      }, 500)
+      }, 1000)
     }
   }
   return (
     <div>
       <Header />
       <div className='container'>
+        {message && (
+          <Alert className={`alert alert-${color} `}>{message}</Alert>
+        )}
         <h2>USER PROFILE</h2>
         <Form onSubmit={e => handleSubmit(e)}>
           <Form.Group controlId='name'>

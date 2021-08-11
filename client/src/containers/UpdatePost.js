@@ -1,33 +1,46 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Alert, Button, Form } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
-import { AddPost } from '../redux/actions/authaction'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import {
+  AddPost,
+  GetSingleUserID,
+  PostUpdate
+} from '../redux/actions/authaction'
 import Header from './Header'
-
-const CreatePost = ({ history }) => {
-  const [message, setMessage] = useState('')
-  const [color, setColor] = useState('')
+const UpdatePost = ({ history }) => {
   const dispatch = useDispatch()
-
   const [post, setPost] = useState({
     text: ''
   })
-  let { text } = post
+  const { text } = post
+  const [message, setMessage] = useState('')
+  const [color, setColor] = useState('')
+  const Userpost = useSelector(state => state.post)
+  let { id } = useParams()
+  console.log(Userpost)
+  useEffect(() => {
+    setPost({
+      text: Userpost.post?.text
+    })
+    dispatch(GetSingleUserID(id))
+  }, [Userpost.post?.text, dispatch, id])
+
   const handleSubmit = e => {
     e.preventDefault()
     if (text === '') {
-      setMessage('Enter your post')
+      setMessage('Enter your post to update...')
       setColor('danger')
     } else {
-      dispatch(AddPost({ post }))
-      setMessage('Post Added successfully')
+      dispatch(PostUpdate(id, { post }))
+      console.log(text)
+      setMessage('Post updated successfully...')
       setColor('success')
       setTimeout(() => {
         history.push('/home')
       }, 1000)
     }
   }
-
   return (
     <div>
       <Header />
@@ -35,7 +48,7 @@ const CreatePost = ({ history }) => {
         {message && (
           <Alert className={`alert alert-${color} `}>{message}</Alert>
         )}
-        <h2>Create Posts</h2>
+        <h2>Update Post</h2>
         <Form className='mt-5'>
           <Form.Group className='mb-3' controlId='exampleForm.ControlTextarea1'>
             <Form.Control
@@ -52,8 +65,11 @@ const CreatePost = ({ history }) => {
               required
             />
           </Form.Group>
-          <Button className='btn btn-primary' onClick={e => handleSubmit(e)}>
-            Add Post
+          <Button
+            className='btn btn-warning text-white'
+            onClick={e => handleSubmit(e)}
+          >
+            Update Post
           </Button>
         </Form>
       </div>
@@ -61,4 +77,4 @@ const CreatePost = ({ history }) => {
   )
 }
 
-export default CreatePost
+export default UpdatePost

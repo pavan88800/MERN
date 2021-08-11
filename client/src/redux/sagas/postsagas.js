@@ -1,6 +1,20 @@
-import { put, call, takeLatest, delay } from 'redux-saga/effects'
-import { POSTS_SUCCESS, POST_FAIL, ADD_POST, POST_DELETE } from '../types'
-import { AddPostAPI, DeletePostAPI, GetPostsAPI } from '../api/postApi'
+import { put, call } from 'redux-saga/effects'
+import {
+  POSTS_SUCCESS,
+  POST_FAIL,
+  ADD_POST,
+  POST_DELETE,
+  POST_UPDATE_REQUEST_SUCCESS,
+  POST_UPDATE_REQUEST_FAIL,
+  GET_SINGLE_POST_SUCCESS
+} from '../types'
+import {
+  AddPostAPI,
+  DeletePostAPI,
+  GetPostsAPI,
+  SinglePostAPI,
+  UpdatePost
+} from '../api/postApi'
 export function * getPost (action) {
   try {
     let res = yield call(GetPostsAPI, action.payload)
@@ -32,8 +46,36 @@ export function * addPost (action) {
   }
 }
 
+export function * singlePost (action) {
+  try {
+    let res = yield call(SinglePostAPI, action.payload)
+    yield put({
+      type: GET_SINGLE_POST_SUCCESS,
+      payload: res.data
+    })
+  } catch (err) {
+    yield put({
+      type: POST_FAIL,
+      payload: err
+    })
+  }
+}
+export function * updatePost (action) {
+  try {
+    let res = yield call(UpdatePost, action.payload.id, action.payload)
+    yield put({
+      type: POST_UPDATE_REQUEST_SUCCESS,
+      payload: res.data
+    })
+    console.log(res)
+  } catch (err) {
+    yield put({
+      type: POST_UPDATE_REQUEST_FAIL,
+      payload: err
+    })
+  }
+}
 export function * deletePost (action) {
-  console.log(action.payload)
   try {
     let res = yield call(DeletePostAPI, action.payload)
     yield put({

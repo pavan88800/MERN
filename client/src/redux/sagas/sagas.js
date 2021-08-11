@@ -1,6 +1,12 @@
 import { put, call, takeLatest, delay } from 'redux-saga/effects'
 import { LoginAPI, UserAPI } from '../api/loginApi'
-import { getPost, addPost, deletePost } from './postsagas'
+import {
+  getPost,
+  addPost,
+  deletePost,
+  updatePost,
+  singlePost
+} from './postsagas'
 import { RegisterAPI, UpdateAPI } from '../api/registerApi'
 
 import {
@@ -16,20 +22,19 @@ import {
   USER_LOGOUT_REQUEST,
   USER_REGISTER_REQUEST,
   GET_POST_REQUEST,
-  POSTS_SUCCESS,
-  POST_FAIL,
-  ADD_POST,
   ADD_POST_REQUEST,
   DELETE_POST_REQUEST,
   USER_UPDATE_REQUEST_SUCCESS,
-  USER_UPDATE_REQUEST
+  USER_UPDATE_REQUEST,
+  POST_UPDATE_REQUEST,
+  GET_SINGLE_POST
 } from '../types'
 
 // Register
 export function * register (action) {
   try {
     let res = yield call(RegisterAPI, action.payload)
-    console.log(res)
+
     delay(200)
     yield put({
       type: REGISTER_SUCCESS,
@@ -37,7 +42,6 @@ export function * register (action) {
     })
     // localStorage.setItem('token', JSON.stringify(res.data))
   } catch (err) {
-    console.log(err)
     delay(1000)
     const errors = err.response.data
     yield put({
@@ -56,9 +60,6 @@ export function * login (action) {
       payload: res.data
     })
     localStorage.setItem('token', JSON.stringify(res.data))
-    // if (res.status === 200) {
-    //   return <Redirect to='/home' />
-    // }
   } catch (err) {
     const errors = err.response.data
     yield put({
@@ -95,7 +96,7 @@ export function * userDetails (action) {
 export function * updateUser (action) {
   try {
     let res = yield call(UpdateAPI, action.payload)
-    console.log(res, 'from update user')
+
     delay(200)
     yield put({
       type: USER_UPDATE_REQUEST_SUCCESS,
@@ -103,7 +104,6 @@ export function * updateUser (action) {
     })
     localStorage.setItem('token', JSON.stringify(res.data))
   } catch (err) {
-    console.log(err)
     delay(1000)
     const errors = err.response.data
     yield put({
@@ -122,4 +122,6 @@ export function * watchAgeUp () {
   yield takeLatest(ADD_POST_REQUEST, addPost)
   yield takeLatest(DELETE_POST_REQUEST, deletePost)
   yield takeLatest(USER_UPDATE_REQUEST, updateUser)
+  yield takeLatest(POST_UPDATE_REQUEST, updatePost)
+  yield takeLatest(GET_SINGLE_POST, singlePost)
 }

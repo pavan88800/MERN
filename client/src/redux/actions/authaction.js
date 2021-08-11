@@ -2,6 +2,8 @@ import {
   ADD_POST_REQUEST,
   DELETE_POST_REQUEST,
   GET_POST_REQUEST,
+  GET_SINGLE_POST,
+  POST_UPDATE_REQUEST,
   USER_DETAILS_REQUEST,
   USER_LOGIN_REQUEST,
   USER_LOGOUT_REQUEST,
@@ -63,5 +65,19 @@ export function UpdateUser (data) {
   return {
     type: USER_UPDATE_REQUEST,
     payload: data
+  }
+}
+export function GetSingleUserID (id) {
+  return {
+    type: GET_SINGLE_POST,
+    payload: id
+  }
+}
+
+export function PostUpdate (id, data) {
+  console.log(id, data, 'post update')
+  return {
+    type: POST_UPDATE_REQUEST,
+    payload: { id, data }
   }
 }

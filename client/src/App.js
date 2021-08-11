@@ -8,6 +8,7 @@ import Home from './Componets/Home'
 import CreatePost from './containers/CreatePost'
 import UserProfile from './containers/UserProfile'
 import PrivateRoute from './utlis/PrivateRoute'
+import UpdatePost from './containers/UpdatePost'
 function App () {
   return (
     <Provider store={store}>
@@ -19,6 +20,7 @@ function App () {
             <Route exact path='/login' component={Login} />
             <Route exact path='/createPost' component={CreatePost} />
             <Route exact path='/userprofile' component={UserProfile} />
+            <Route exact path='/updatepost/:id' component={UpdatePost} />
             <PrivateRoute exact path='/home' component={Home} />
           </Switch>
         </div>

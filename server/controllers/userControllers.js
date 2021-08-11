@@ -153,10 +153,11 @@ const updateUser = async (req, res) => {
 
       if (req.body.password) {
         user.password = req.body.password
-        console.log(user.password)
+        let salt = await bcrypt.genSalt(10)
+        user.password = await bcrypt.hash(req.body.password, salt)
+      } else {
+        user.password
       }
-      let salt = await bcrypt.genSalt(10)
-      user.password = await bcrypt.hash(req.body.password, salt)
 
       let updatedUser = await user.save()
       console.log(updatedUser)

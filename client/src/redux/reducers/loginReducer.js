@@ -19,7 +19,7 @@ const initialState = {
 
 export function LoginUser (state = initialState, action) {
   const { type, payload } = action
-  console.log(payload)
+
   switch (type) {
     case USER_LOGIN_REQUEST:
       return {
@@ -64,7 +64,7 @@ export function LoginUser (state = initialState, action) {
 
 export function userDetailsReducer (state = { users: {} }, action) {
   const { type, payload } = action
-  console.log(payload, 'token Here is Here....')
+
   switch (type) {
     case USER_DETAILS_REQUEST:
       return {
@@ -72,7 +72,6 @@ export function userDetailsReducer (state = { users: {} }, action) {
         loading: true
       }
     case USER_DETAILS_SUCCESS:
-      console.log('successfully')
       return {
         ...state,
         loading: false,
@@ -80,7 +79,6 @@ export function userDetailsReducer (state = { users: {} }, action) {
       }
 
     case USER_DETAILS_FAIL:
-      console.log('Failed Here')
       return {
         ...state,
         loading: false,

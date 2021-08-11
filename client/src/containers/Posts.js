@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react'
-import { Button, Card } from 'react-bootstrap'
+import React from 'react'
+import { Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
-import { Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { PostDelete } from '../redux/actions/authaction'
 const Posts = ({ post }) => {
-  const history = useHistory()
   const dispatch = useDispatch()
   let userInfo = useSelector(state => state.user.users)
-  console.log(userInfo?._id)
 
   const deleteposthere = id => {
     dispatch(PostDelete(id))
@@ -17,22 +14,34 @@ const Posts = ({ post }) => {
   return (
     <div>
       <Card
-        style={{ width: '19rem', height: '300px' }}
+        style={{ width: '19rem', height: '300px', borderRadius: '20px' }}
         className=' shadow mt-5'
       >
         <Card.Body className='text-dark'>
           <Card.Text className='text-secondary '>
-            Author {post.author}{' '}
+            Author {post.author}
             {userInfo?._id === post.user && (
-              <i
-                onClick={() => deleteposthere(post._id)}
-                className='fas fa-trash-alt'
-                style={{
-                  cursor: 'pointer',
-                  marginLeft: '115px',
-                  color: 'red'
-                }}
-              ></i>
+              <>
+                <i
+                  onClick={() => deleteposthere(post._id)}
+                  className='fas fa-trash-alt'
+                  style={{
+                    cursor: 'pointer',
+                    marginLeft: '60px',
+                    color: 'red'
+                  }}
+                ></i>
+                <Link to={`/updatepost/${post._id}`}>
+                  <i
+                    className='fas fa-pen'
+                    style={{
+                      cursor: 'pointer',
+                      marginLeft: '25px',
+                      color: 'blue'
+                    }}
+                  ></i>
+                </Link>
+              </>
             )}
           </Card.Text>
           <hr />

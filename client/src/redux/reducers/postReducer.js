@@ -5,7 +5,11 @@ import {
   ADD_POST,
   ADD_POST_REQUEST,
   DELETE_POST_REQUEST,
-  POST_DELETE
+  POST_DELETE,
+  POST_UPDATE_REQUEST,
+  POST_UPDATE_REQUEST_SUCCESS,
+  POST_UPDATE_REQUEST_FAIL,
+  GET_SINGLE_POST_SUCCESS
 } from '../types'
 const initialState = {
   posts: [],
@@ -15,7 +19,7 @@ const initialState = {
 }
 export function postReducer (state = initialState, action) {
   const { type, payload } = action
-  console.log(payload, 'payload is already There ')
+
   switch (type) {
     case GET_POST_REQUEST:
       return {
@@ -53,6 +57,26 @@ export function postReducer (state = initialState, action) {
         posts: state.posts.filter(post => post._id !== payload),
         loading: false
       }
+    case GET_SINGLE_POST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        post: payload
+      }
+
+    case POST_UPDATE_REQUEST:
+      return {
+        ...state,
+        loading: true
+      }
+
+    case POST_UPDATE_REQUEST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        post: { ...state.post, payload }
+      }
+    case POST_UPDATE_REQUEST_FAIL:
     case POST_FAIL:
       return {
         ...state,

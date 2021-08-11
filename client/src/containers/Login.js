@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { Form, Button, Row, Col, Container } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Form, Button, Row, Col, Container, Alert } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import { userLogin } from '../redux/actions/authaction'
 import api from '../utlis/axios'
 
 const Login = () => {
+  const [message, setMessage] = useState('')
+  const [color, setColor] = useState('')
   const dispatch = useDispatch()
   let user = useSelector(state => state.loginUser)
   let { isAuthenticated, error, loading } = user
@@ -23,11 +25,12 @@ const Login = () => {
   const handleSubmit = e => {
     e.preventDefault()
     if (email === '' || password === '') {
-      alert('Please enter all values')
+      // alert('Please enter all values')
+      setMessage('Please Enter all Values')
+      setColor('danger')
     } else {
       if (localStorage.getItem('token')) {
         const token = JSON.parse(localStorage.getItem('token'))
-        console.log(token.token, 'globally')
         api.defaults.headers.common['x-auth-token'] = token.token || token
       }
       dispatch(userLogin({ email, password }))
@@ -41,6 +44,9 @@ const Login = () => {
       <Container>
         <Row className='justify-content-md-center'>
           <Col xs={12} md={6}>
+            {message && (
+              <Alert className={`alert alert-${color} `}>{message}</Alert>
+            )}
             {error &&
               error?.map((error, i) => (
                 <p className='alert alert-danger text-center' key={i}>
@@ -91,7 +97,7 @@ const Login = () => {
               </Button>
               <Row className='py-3'>
                 <Col>
-                  Have an Account? <Link to='/register'>Register</Link>
+                  Don't have an account? <Link to='/register'>Register</Link>
                 </Col>
               </Row>
             </Form>

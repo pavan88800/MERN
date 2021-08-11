@@ -1,6 +1,5 @@
-import Switch from 'react-bootstrap/esm/Switch'
 import { useSelector } from 'react-redux'
-import { Redirect, Route, Router } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const user = useSelector(state => state.loginUser)

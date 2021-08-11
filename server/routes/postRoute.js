@@ -3,7 +3,9 @@ const { check } = require('express-validator')
 const {
   createPost,
   getAllPosts,
-  deletePost
+  deletePost,
+  updatePost,
+  getSinglePost
 } = require('../controllers/postController')
 const auth = require('../middleware/auth')
 const checkObjectId = require('../middleware/checkObjectId')
@@ -15,4 +17,6 @@ router
 
 router.route('/allposts').get(auth, getAllPosts)
 router.route('/:id').delete(auth, checkObjectId('id'), deletePost)
+router.route('/:id').get(auth, checkObjectId('id'), getSinglePost)
+router.route('/updatepost/:id').put(auth, checkObjectId('id'), updatePost)
 module.exports = router

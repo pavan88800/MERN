@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { Col, Container, Row, Spinner } from 'react-bootstrap'
-
 import { useDispatch, useSelector } from 'react-redux'
 import Header from '../containers/Header'
 import Posts from '../containers/Posts'
 import { getAllPosts } from '../redux/actions/authaction'
 import api from '../utlis/axios'
+
 const Home = () => {
   const dispatch = useDispatch()
   // user token checks here
@@ -15,11 +15,12 @@ const Home = () => {
   // Posts Data
   const post = useSelector(state => state.post)
   const { loading, posts } = post
+
   // componentdidupdate
   useEffect(() => {
     if (localStorage.getItem('token')) {
       const token = JSON.parse(localStorage.getItem('token'))
-      console.log(token.token, 'globally')
+
       api.defaults.headers.common['x-auth-token'] = token.token || token
     }
     dispatch(getAllPosts(token))
@@ -30,6 +31,7 @@ const Home = () => {
       <Header />
       <div className='container'>
         <h1 className='text-muted'>All Posts</h1>
+
         {loading ? (
           <Spinner
             animation='border'
@@ -38,7 +40,8 @@ const Home = () => {
               width: '100px',
               height: '100px',
               margin: 'auto',
-              display: 'block'
+              display: 'block',
+              marginTop: '250px'
             }}
           />
         ) : (
